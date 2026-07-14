@@ -22,6 +22,7 @@ from .contracts import CLASS_NAMES, MODEL_OUTPUT_NAMES
 
 PACKAGE_ROOT = Path(__file__).resolve().parent
 PROJECT_ROOT = PACKAGE_ROOT.parents[1]
+LAUNCH_ROOT = PROJECT_ROOT if (PROJECT_ROOT / "roadscope_n5.onnx").is_file() else Path.cwd()
 DEFAULT_MODEL = next(
     (
         candidate
@@ -30,6 +31,8 @@ DEFAULT_MODEL = next(
     ),
     PROJECT_ROOT / "roadscope_n5.onnx",
 )
+DEFAULT_SOURCE = LAUNCH_ROOT / "input"
+DEFAULT_OUTPUT = LAUNCH_ROOT / "output"
 IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
 COLORS = (
     (255, 170, 40),
@@ -407,11 +410,16 @@ class RoadScopeRuntime:
         )
 
 
-def main() -> None:
+def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--source", type=Path, required=True, help="Image file or directory")
+    parser.add_argument(
+        "--source",
+        type=Path,
+        default=DEFAULT_SOURCE,
+        help=f"Image file or directory (default: {DEFAULT_SOURCE})",
+    )
     parser.add_argument("--model", type=Path, default=DEFAULT_MODEL)
-    parser.add_argument("--output", type=Path, default=Path.cwd() / "output")
+    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--provider", choices=("auto", "cuda", "cpu"), default="auto")
     parser.add_argument("--confidence", type=float, default=0.25)
     parser.add_argument("--iou", type=float, default=0.50)
@@ -419,7 +427,11 @@ def main() -> None:
     parser.add_argument("--lane-threshold", type=float, default=0.50)
     parser.add_argument("--max-det", type=int, default=300)
     parser.add_argument("--limit", type=int, default=None)
-    args = parser.parse_args()
+    return parser
+
+
+def main() -> None:
+    args = build_parser().parse_args()
 
     thresholds = {
         "road-threshold": args.road_threshold,

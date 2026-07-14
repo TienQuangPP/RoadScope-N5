@@ -15,6 +15,9 @@ if str(SOURCE) not in sys.path:
     sys.path.insert(0, str(SOURCE))
 
 from roadscope_n5.inference import (
+    DEFAULT_OUTPUT,
+    DEFAULT_SOURCE,
+    build_parser,
     decode_detections,
     letterbox,
     nms,
@@ -90,6 +93,11 @@ class DetectionTests(unittest.TestCase):
 
 
 class SafetyAndIoTests(unittest.TestCase):
+    def test_cli_uses_repository_demo_folders_by_default(self) -> None:
+        args = build_parser().parse_args([])
+        self.assertEqual(args.source, DEFAULT_SOURCE)
+        self.assertEqual(args.output, DEFAULT_OUTPUT)
+
     def test_invalid_provider_is_rejected(self) -> None:
         with self.assertRaisesRegex(ValueError, "provider"):
             RoadScopeRuntime(MODEL, provider="invalid")

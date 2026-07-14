@@ -60,8 +60,12 @@ On Windows, double-click `RUN.bat`.
 On any supported platform:
 
 ```bash
-python run.py --source input --output output
+python run.py
 ```
+
+With no arguments, the launcher reads every supported image in `input/`, uses
+`roadscope_n5.onnx`, and writes the generated artifacts to `output/`.
+Use `--source`, `--model`, or `--output` only when overriding these defaults.
 
 The output directory receives annotated images, relative-depth maps,
 side-by-side comparisons, and JSON reports.
