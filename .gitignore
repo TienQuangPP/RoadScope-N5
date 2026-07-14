@@ -1,0 +1,45 @@
+# Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+build/
+dist/
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Credentials and machine-local configuration
+.env
+.env.*
+*.key
+*.pem
+credentials*
+kaggle.json
+access_token*
+*.token
+
+# Training state and local datasets
+checkpoints/
+runs/
+data/
+*.pt
+*.pth
+*.ckpt
+*.engine
+
+# Keep private inputs and generated outputs out of Git.
+input/*
+!input/demo-*.jpg
+output/*
+!output/*-result.jpg
+
+# The released ONNX artifact is intentionally tracked.
+!roadscope_n5.onnx

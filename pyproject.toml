@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "roadscope-n5"
+version = "1.0.0"
+description = "Standalone multi-task road-scene perception for static images"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "License :: OSI Approved :: GNU Affero General Public License v3",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+  "numpy>=1.26,<3",
+  "opencv-python>=4.8,<5",
+  "onnxruntime>=1.18,<2",
+]
+
+[project.optional-dependencies]
+train = [
+  "torch>=2.3,<3",
+  "torchvision>=0.18,<1",
+  "ultralytics==8.4.66",
+  "onnx>=1.17,<2",
+]
+dev = [
+  "ruff>=0.9,<1",
+]
+
+[project.scripts]
+roadscope-n5 = "roadscope_n5.inference:main"
+roadscope-n5-train = "roadscope_n5.training.train:main"
+roadscope-n5-evaluate = "roadscope_n5.training.evaluate:main"
+roadscope-n5-export = "roadscope_n5.training.export:main"
+roadscope-n5-benchmark-pytorch = "roadscope_n5.tools.benchmark_runtime:main"
+roadscope-n5-benchmark-onnx = "roadscope_n5.tools.benchmark_onnx:main"
+roadscope-n5-build-target = "roadscope_n5.tools.build_target:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+roadscope_n5 = ["py.typed"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]

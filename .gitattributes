@@ -1,0 +1,7 @@
+*.onnx binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.bat text eol=crlf
+*.py text eol=lf
+*.md text eol=lf
